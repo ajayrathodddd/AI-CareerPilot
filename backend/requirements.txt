@@ -10,3 +10,4 @@ pdf2image
 pytesseract
 python-jose[cryptography]
 passlib[bcrypt]
+email-validator
