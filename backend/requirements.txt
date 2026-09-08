@@ -8,3 +8,5 @@ python-dotenv==1.0.1
 pypdf
 pdf2image
 pytesseract
+python-jose[cryptography]
+passlib[bcrypt]
