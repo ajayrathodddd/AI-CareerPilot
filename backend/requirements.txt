@@ -6,3 +6,4 @@ pymongo==4.9.2
 motor==3.6.0
 python-dotenv==1.0.1
 pypdf
+pdf2image
