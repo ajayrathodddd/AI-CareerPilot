@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ResumeUpload from "./components/resume/ResumeUpload";
-import JobMatcher from "./components/job/jobMatcher";
+import JobMatcher from "./components/job/JobMatcher";
 import LearningRoadmap from "./components/learning/LearningRoadmap";
 import InterviewAI from "./components/interview/InterviewAI";
 import AuthPage from "./components/auth/AuthPage";

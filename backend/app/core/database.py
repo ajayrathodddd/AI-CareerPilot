@@ -1,14 +1,11 @@
 from motor.motor_asyncio import AsyncIOMotorClient
-import os
+from app.core.config import settings
 
-MONGO_URI = os.getenv(
-    "MONGO_URI",
-    "mongodb://localhost:27017"
-)
+MONGO_URI = settings.MONGODB_URI
 
 client = AsyncIOMotorClient(MONGO_URI)
 
-db = client["ai_careerpilot_new"]
+db = client[settings.MONGODB_DB]
 
 
 async def check_mongodb_connection():
