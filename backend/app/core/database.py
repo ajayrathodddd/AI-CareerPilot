@@ -11,6 +11,8 @@ db = client[settings.MONGODB_DB]
 async def check_mongodb_connection():
     try:
         await client.admin.command("ping")
+        print("✅ MongoDB connected successfully")
         return True
-    except Exception:
+    except Exception as e:
+        print(f"❌ MongoDB connection failed: {type(e).__name__}: {e}")
         return False
