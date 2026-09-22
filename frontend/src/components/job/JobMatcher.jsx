@@ -73,7 +73,11 @@ export default function JobMatcher({
     }
 
     if (!currentJob?.description.trim()) {
-      updateJob(jobId, "error", "Please enter a job description.");
+      updateJob(
+        jobId,
+        "error",
+        "Please enter a job description."
+      );
       return;
     }
 
@@ -97,7 +101,7 @@ export default function JobMatcher({
       });
 
       const response = await fetch(
-        `http://localhost:8000/api/v1/job/match?${params.toString()}`,
+        `https://ai-careerpilot-hmhp.onrender.com/api/v1/job/match?${params.toString()}`,
         {
           method: "POST",
         }
@@ -106,11 +110,74 @@ export default function JobMatcher({
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.detail || "Job matching failed.");
+        throw new Error(
+          data.detail || "Job matching failed."
+        );
       }
 
+      // Get the actual job match result
       const matchResult = data.match_result;
 
+      // Save job match to Analysis History
+      try {
+        const user = JSON.parse(
+          localStorage.getItem("careerpilot_user")
+        );
+
+        if (user?.id) {
+          const historyResponse = await fetch(
+            "https://ai-careerpilot-hmhp.onrender.com/api/v1/history",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                user_id: user.id,
+                analysis_type: "job_match",
+                title:
+                  currentJob.title ||
+                  "Job Opportunity",
+                score: null,
+                match_percentage:
+                  matchResult.match_score,
+                resume_id:
+                  resumeResult.resume_id,
+                job_title:
+                  currentJob.title ||
+                  "Job Opportunity",
+                summary: `Job match score: ${matchResult.match_score}%`,
+              }),
+            }
+          );
+
+          if (!historyResponse.ok) {
+            const historyError =
+              await historyResponse.json();
+
+            console.error(
+              "Failed to save job match history:",
+              historyError
+            );
+          } else {
+            console.log(
+              "Job match history saved successfully"
+            );
+          }
+        } else {
+          console.warn(
+            "No logged-in user found. Job match history was not saved."
+          );
+        }
+      } catch (historyError) {
+        // Do not break the Job Matcher if history saving fails
+        console.error(
+          "Job match history error:",
+          historyError
+        );
+      }
+
+      // Display the match result
       setJobs((prev) =>
         prev.map((job) =>
           job.id === jobId
@@ -134,7 +201,9 @@ export default function JobMatcher({
             ? {
                 ...job,
                 loading: false,
-                error: err.message || "Job matching failed.",
+                error:
+                  err.message ||
+                  "Job matching failed.",
               }
             : job
         )
@@ -152,7 +221,8 @@ export default function JobMatcher({
         </h2>
 
         <p className="mt-2 text-slate-500">
-          Upload a resume from the Dashboard before matching it with a job.
+          Upload a resume from the Dashboard before
+          matching it with a job.
         </p>
       </div>
     );
@@ -170,7 +240,8 @@ export default function JobMatcher({
         </div>
 
         <p className="mt-1 text-slate-500">
-          Compare your resume against multiple job opportunities.
+          Compare your resume against multiple job
+          opportunities.
         </p>
       </div>
 
@@ -184,7 +255,9 @@ export default function JobMatcher({
             </p>
 
             <p className="text-sm text-slate-500">
-              {resumeResult.skills_analysis?.total_skills || 0} skills detected
+              {resumeResult.skills_analysis?.total_skills ||
+                0}{" "}
+              skills detected
             </p>
           </div>
         </div>
@@ -219,9 +292,13 @@ export default function JobMatcher({
             type="text"
             value={job.title}
             onChange={(e) =>
-              updateJob(job.id, "title", e.target.value)
+              updateJob(
+                job.id,
+                "title",
+                e.target.value
+              )
             }
-            placeholder="e.g. React Developer"
+            placeholder="e.g. Full Stack Developer"
             className="mb-5 w-full rounded-xl border border-slate-300 p-4 text-sm outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
           />
 
@@ -232,7 +309,11 @@ export default function JobMatcher({
           <textarea
             value={job.description}
             onChange={(e) =>
-              updateJob(job.id, "description", e.target.value)
+              updateJob(
+                job.id,
+                "description",
+                e.target.value
+              )
             }
             placeholder="Paste the job description here..."
             rows={10}
@@ -287,16 +368,19 @@ export default function JobMatcher({
                     Matched Skills
                   </h2>
 
-                  {job.result.matched_skills?.length > 0 ? (
+                  {job.result.matched_skills?.length >
+                  0 ? (
                     <div className="flex flex-wrap gap-2">
-                      {job.result.matched_skills.map((skill) => (
-                        <span
-                          key={skill}
-                          className="rounded-full bg-green-50 px-3 py-2 text-sm font-medium text-green-700"
-                        >
-                          {skill}
-                        </span>
-                      ))}
+                      {job.result.matched_skills.map(
+                        (skill) => (
+                          <span
+                            key={skill}
+                            className="rounded-full bg-green-50 px-3 py-2 text-sm font-medium text-green-700"
+                          >
+                            {skill}
+                          </span>
+                        )
+                      )}
                     </div>
                   ) : (
                     <p className="text-sm text-slate-500">
@@ -311,16 +395,19 @@ export default function JobMatcher({
                     Missing Skills
                   </h2>
 
-                  {job.result.missing_skills?.length > 0 ? (
+                  {job.result.missing_skills?.length >
+                  0 ? (
                     <div className="flex flex-wrap gap-2">
-                      {job.result.missing_skills.map((skill) => (
-                        <span
-                          key={skill}
-                          className="rounded-full bg-red-50 px-3 py-2 text-sm font-medium text-red-700"
-                        >
-                          {skill}
-                        </span>
-                      ))}
+                      {job.result.missing_skills.map(
+                        (skill) => (
+                          <span
+                            key={skill}
+                            className="rounded-full bg-red-50 px-3 py-2 text-sm font-medium text-red-700"
+                          >
+                            {skill}
+                          </span>
+                        )
+                      )}
                     </div>
                   ) : (
                     <p className="text-sm text-slate-500">

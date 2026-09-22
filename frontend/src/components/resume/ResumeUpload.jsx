@@ -90,7 +90,7 @@ function ResumeUpload({
     const score = Number(data.ats_analysis?.score || 0);
 
     const response = await fetch(
-      "http://localhost:8000/api/v1/history",
+     "https://ai-careerpilot-hmhp.onrender.com/api/v1/history",
       {
         method: "POST",
         headers: {
@@ -155,7 +155,7 @@ function ResumeUpload({
       formData.append("file", selectedFile);
 
       const response = await fetch(
-        "http://localhost:8000/api/v1/resume/upload",
+       "https://ai-careerpilot-hmhp.onrender.com/api/v1/resume/upload",
         {
           method: "POST",
           body: formData,

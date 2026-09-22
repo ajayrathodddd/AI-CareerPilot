@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { LogIn, UserPlus, Briefcase } from "lucide-react";
 
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = "https://ai-careerpilot-hmhp.onrender.com";
 
 function AuthPage({ onLogin }) {
   const [mode, setMode] = useState("login");

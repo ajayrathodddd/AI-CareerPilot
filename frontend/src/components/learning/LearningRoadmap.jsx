@@ -811,7 +811,7 @@ const activeSkill = recommendedSkills[activeSkillIndex];
 
     try {
       const response = await fetch(
-        `http://localhost:8000/api/v1/progress/${userId}`
+        `https://ai-careerpilot-hmhp.onrender.com/api/v1/progress/${userId}`
       );
 
       if (!response.ok) {
@@ -877,7 +877,7 @@ const activeSkill = recommendedSkills[activeSkillIndex];
 
     try {
       const response = await fetch(
-        "http://localhost:8000/api/v1/practice/run",
+       "https://ai-careerpilot-hmhp.onrender.com/api/v1/practice/run",
         {
           method: "POST",
           headers: {
@@ -909,7 +909,7 @@ if (data.success) {
   if (userId) {
     try {
       await fetch(
-        "http://localhost:8000/api/v1/progress/save",
+        "https://ai-careerpilot-hmhp.onrender.com/api/v1/progress/save",
         {
           method: "POST",
           headers: {
@@ -994,7 +994,7 @@ if (data.success) {
   if (userId) {
     try {
       await fetch(
-        "http://localhost:8000/api/v1/progress/save",
+        "https://ai-careerpilot-hmhp.onrender.com/api/v1/progress/save",
         {
           method: "POST",
           headers: {
@@ -1045,7 +1045,10 @@ if (data.success) {
 
   try {
     await fetch(
-      "http://localhost:8000/api/v1/progress/save",
+      
+       "https://ai-careerpilot-hmhp.onrender.com/api/v1/progress/save",
+
+
       {
         method: "POST",
         headers: {

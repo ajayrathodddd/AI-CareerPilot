@@ -100,7 +100,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:8000/health")
+    fetch("https://ai-careerpilot-hmhp.onrender.com/health")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Backend request failed");
@@ -128,7 +128,7 @@ function App() {
       const userId = user.id || user._id || user.email;
 
       const response = await fetch(
-        `http://localhost:8000/api/v1/history?user_id=${encodeURIComponent(
+       `https://ai-careerpilot-hmhp.onrender.com/api/v1/history?user_id=${encodeURIComponent(
           userId
         )}`
       );
